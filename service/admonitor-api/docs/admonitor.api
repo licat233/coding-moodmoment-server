@@ -1,0 +1,41 @@
+info(
+	title: "广告监测服务API"
+	author: "licat"
+	email: "1697470538@qq.com"
+	version: "v1"
+)
+
+type Request {
+	Id int64 `json:"id"`
+}
+
+type Response {
+	Success bool        `json:"success"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
+}
+
+//获取日期范围内的广告监测数据
+type GetStatisticsRequest {
+	Channel   string `json:"channel"`   //渠道
+	AccountId string `json:"accountId"` //账号
+	StartTime string `json:"startTime"` //开始日期
+	EndTime   string `json:"endTime"`   //结束日期
+}
+
+@server(
+	prefix: /admonitor
+)
+service server-api {
+	@doc(
+		summary: "获取日期范围内的广告监测数据",
+	)
+	@handler GetStatisticsHandler
+	get /statistics (GetStatisticsRequest) returns (Response)
+	
+	@doc(
+		summary: 获取监控系统状态
+	)
+	@handler GetStatusHandler
+	get /status returns (Response)
+}
