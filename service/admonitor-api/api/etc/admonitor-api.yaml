@@ -1,0 +1,18 @@
+Name: admonitor-api
+Host: 0.0.0.0
+Port: 8802
+
+Mysql:
+  DataSource: Admonitor:imih7kNDasGJ6dFP@tcp(150.109.61.90:3306)/admonitor?charset=utf8mb4&parseTime=True&loc=Local
+  MaxIdleConns: 0
+  MaxOpenConns: 0
+  LogMode: false
+  LogZap: ""
+
+CacheRedis:
+  - Host: localhost:6379
+
+Auth:
+  AccessSecret: licatcatcatcatcat
+  AccessExpire: 604800
+  BufferTime: 86400

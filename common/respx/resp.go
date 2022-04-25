@@ -1,7 +1,6 @@
 package respx
 
 import (
-	"errors"
 	"moodMoment-server/common/errorx"
 	"reflect"
 )
@@ -66,84 +65,6 @@ type ListData struct {
 	PageSize int64  `json:"pageSize"` // 【选填】单页数量
 	Current  int64  `json:"current"`  // 【选填】当前页码
 	Page     int64  `json:"page"`     // 【自定】总共有多少页，根据前端的pageSize来计算
-}
-
-/** Result 想用语法糖，根据err响应信息，用于对接go-zero返回体
- * err error
- * params请依次传入：
- * alertMsg string 提示信息
- * data any 返回的数据，如果是分页请求，请返回slice类型
- * totalRecord in64 总数据量
- * pageSize int64 单页数据量
- * Current int64 当前页码
- */
-func Result(err error, params ...any) (any, error) {
-	// success := "请求成功"
-	// fail := "请求失败"
-	if err != nil {
-		//返回错误
-		return nil, err
-	}
-	return New(params), err
-}
-
-/** New 响应语法糖，新建成功响应
- * 该方法是无错误返回，所以不用传入err
- * 请依次传入：
- * alertMsg string 提示信息
- * data any 返回的数据，如果是分页请求，请返回slice类型
- * totalRecord in64 总数据量
- * pageSize int64 单页数据量
- * Current int64 当前页码
- * 如果不熟悉，请选择其它方法：StateResp、SingleResp、ListResp
- */
-func New(params ...any) any {
-	var data any
-	alertMsg, totalRecord, pageSize, current := SUCCESS_MSG, int64(1), int64(1), int64(1)
-	n := len(params)
-	//参数只有1个，表示状态响应
-	if n > 0 {
-		if v, ok := params[0].(string); ok {
-			if len(v) > 0 {
-				alertMsg = v
-			}
-		} else {
-			return errorx.InternalError("服务器错误", errors.New("respx.New()的第1个参数不是string"))
-		}
-	}
-	if n == 0 || n == 1 {
-		return StateResp(alertMsg)
-	}
-	//参数2个以上，表示单页数据
-	if n > 1 {
-		data = params[1]
-	}
-	if n == 2 {
-		return SingleResp(alertMsg, data)
-	}
-	//参数3个以上，表示分页数据
-	if n > 2 {
-		if v, ok := params[2].(int64); ok {
-			totalRecord = v
-		} else {
-			return errorx.InternalError("服务器错误", errors.New("respx.New()的第3个参数totalRecord不是int64"))
-		}
-	}
-	if n > 3 {
-		if v, ok := params[3].(int64); ok {
-			pageSize = v
-		} else {
-			return errorx.InternalError("服务器错误", errors.New("respx.New()的第4个参数pageSize不是int64"))
-		}
-	}
-	if n > 4 {
-		if v, ok := params[4].(int64); ok {
-			current = v
-		} else {
-			return errorx.InternalError("服务器错误", errors.New("respx.New()的第5个参数current不是int64"))
-		}
-	}
-	return ListResp(alertMsg, data, totalRecord, pageSize, current)
 }
 
 //StateResp 返回响应状态

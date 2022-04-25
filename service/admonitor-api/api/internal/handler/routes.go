@@ -13,14 +13,19 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/statistics",
 				Handler: GetStatisticsHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/status",
 				Handler: GetStatusHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/download/:file",
+				Handler: DownloadHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/admonitor"),

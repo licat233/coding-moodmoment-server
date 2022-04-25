@@ -13,7 +13,11 @@ type Response struct {
 
 type GetStatisticsRequest struct {
 	Channel   string `json:"channel"`   //渠道
-	AccountId string `json:"accountId"` //账号
-	StartTime string `json:"startTime"` //开始日期
-	EndTime   string `json:"endTime"`   //结束日期
+	Account   string `json:"account"`   //账号
+	StartDate string `json:"startDate"` //开始日期
+	EndDate   string `json:"endDate"`   //结束日期
+}
+
+type DownloadReq struct {
+	File string `path:"file"`
 }
